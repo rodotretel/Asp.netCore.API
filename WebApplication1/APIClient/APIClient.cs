@@ -64,7 +64,6 @@ namespace POC.NetCore.API
             try
             {
                 
-
                 var json = JsonConvert.SerializeObject(pessoa);
 
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -105,6 +104,24 @@ namespace POC.NetCore.API
           
 
 
+        }
+
+        public async Task<HttpResponseMessageAPI> GetAsync(string id)
+        {
+          
+            try
+            {
+                HttpResponseMessage data = await _client.GetAsync("/" + id);
+
+                var json = await data.Content.ReadAsStringAsync();
+
+                return JsonConvert.DeserializeObject<HttpResponseMessageAPI>(json);
+            }
+            catch (HttpRequestException e)
+            {
+
+                throw;
+            }
         }
     }
 }

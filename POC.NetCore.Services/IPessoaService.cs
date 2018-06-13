@@ -8,7 +8,7 @@ namespace POC.NetCore.Services
     public interface IPessoaService
     {
         IEnumerable<Pessoa> GetAll();
-     //   Pessoa Get(int id);
+        HttpResponseMessageAPI Get(string id);
         Pessoa Add(Pessoa Pessoa);
         HttpResponseMessageAPI Update(Pessoa Pessoa);
         HttpResponseMessageAPI Delete(String id);

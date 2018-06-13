@@ -19,6 +19,40 @@ namespace POC.NetCore.Services
 
         }
 
+        public HttpResponseMessageAPI Get(string Id)
+        {
+            var file = System.IO.Path.Combine(System.Environment.CurrentDirectory, "data.json");
+            var myJson = "";
+            HttpResponseMessageAPI response = new HttpResponseMessageAPI();
+            Pessoa pessoa;
+            try
+            {
+
+                using (StreamReader responseReader = new StreamReader(file))
+                {
+                    myJson = responseReader.ReadToEnd();
+
+                     List<Pessoa> listaPessoas = JsonConvert.DeserializeObject<List<Pessoa>>(myJson);
+
+                    pessoa = listaPessoas.FirstOrDefault(_ => _.Id == Id);
+                }
+
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+
+            if (pessoa is null)
+                response.Response = new HttpResponseMessage(System.Net.HttpStatusCode.BadRequest);
+            else response.Response = new HttpResponseMessage(System.Net.HttpStatusCode.OK);
+
+            response.Data = pessoa;
+
+            return response;
+        }
+
         public IEnumerable<Pessoa> GetAll()
         {
             var file = System.IO.Path.Combine(System.Environment.CurrentDirectory, "data.json");

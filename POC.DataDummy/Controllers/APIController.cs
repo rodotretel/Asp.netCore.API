@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using POC.NetCore.Model;
 using POC.NetCore.Services;
 
@@ -24,7 +19,7 @@ namespace POC.DataDummy.Controllers
             _env = env;
         }
 
-        // GET api/values
+        // GET api/API
         [HttpGet("/")]
         //[HttpGet]
             public ActionResult Get()
@@ -48,8 +43,32 @@ namespace POC.DataDummy.Controllers
            // return Ok("teste");
             }
 
+        // GET api/API
+        [HttpGet("/{id}")]
+        //[HttpGet]
+        public HttpResponseMessageAPI Get(string id)
+        {
+            HttpResponseMessageAPI response;
 
-         // Post api/API
+            try
+            {
+
+                response = _personService.Get(id);
+
+
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+
+            return response;
+            // return Ok("teste");
+        }
+
+
+        // Post api/API
         [HttpPost("/")]
         public JsonResult Post ([FromBody] Pessoa pessoa)
         {

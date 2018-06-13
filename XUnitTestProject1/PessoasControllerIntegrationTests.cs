@@ -19,6 +19,7 @@ namespace XUnitTestProject1
     {
         private readonly TestServer _server;
         private readonly HttpClient _client;
+        private const string _id = "d04d421e-e4d8-4cfd-bc39-364c294534e3";
 
         public PessoasControllerIntegrationTests()
         {
@@ -35,7 +36,7 @@ namespace XUnitTestProject1
             // Arrange
             var pessoa = new Pessoa
             {
-                Id = "1e24b727-4471-4f25-99fe-b651b98a5ae6",
+                Id = _id,
                 PrimeiroNome = "John",
                 LastName = "Doe",
                 Idade = 50,
@@ -52,7 +53,7 @@ namespace XUnitTestProject1
             // Assert
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
-            responseString.Should().Be(String.Empty);
+            //responseString.Should().Be(String.Empty);
         }
 
         [Fact]
@@ -70,23 +71,41 @@ namespace XUnitTestProject1
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
             var responseString = await response.Content.ReadAsStringAsync();
             responseString.Should().Contain("The LastName field is required");
-     
+
         }
 
         [Fact]
-        public async Task Pessoa_Delete_Specific()
+        public async Task Get_Specific()
         {
-            // Arrange
-            // var stringContent = new StringContent("1e24b727-4471-4f25-99fe-b651b98a5ae6", Encoding.UTF8, "application/json");
+            //Arrange
+            var id = _id;
 
             // Act
-            var response = await _client.DeleteAsync("/api/Pessoas/");
+            var response = await _client.GetAsync("/api/Pessoas/" + id);
 
             // Assert
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
 
         }
+
+        [Fact]
+        public async Task Pessoa_Delete_Specific()
+        {
+            // Arrange
+            var id = _id;
+
+            // Act
+            var response = await _client.DeleteAsync("/api/Pessoas/" + id);
+
+            // Assert
+            response.EnsureSuccessStatusCode();
+            var responseString = await response.Content.ReadAsStringAsync();
+
+        }
+
+
+      
 
 
     }

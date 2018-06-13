@@ -35,7 +35,7 @@ namespace POC.NetCore.API.Controllers
         public async Task<IActionResult> Get()
         {
             string result;
-            HttpResponseMessage response;
+      
 
             try
             {
@@ -64,13 +64,15 @@ namespace POC.NetCore.API.Controllers
   
         // GET api/values
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<ActionResult> Get(string id)
         {
-            // var model = _personService.Get(id);
+            HttpResponseMessageAPI responseAPI;
 
-            //return Ok(model);
+            responseAPI = await _outraAPIClient.GetAsync(id);
 
-            return Ok("teste");
+            if (responseAPI.Response.IsSuccessStatusCode)
+                return Ok(responseAPI.Data);
+            else return BadRequest();
         }
 
 
@@ -146,7 +148,7 @@ namespace POC.NetCore.API.Controllers
         ///  <returns></returns>
        
         // DELETE api/values/5
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(string id)
         {
             HttpResponseMessageAPI responseAPI;
