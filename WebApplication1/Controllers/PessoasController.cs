@@ -64,7 +64,7 @@ namespace POC.NetCore.API.Controllers
   
         // GET api/values
         [HttpGet("{id}")]
-        public async Task<ActionResult> Get(string id)
+        public async Task<IActionResult> Get(string id)
         {
             HttpResponseMessageAPI responseAPI;
 
@@ -114,7 +114,7 @@ namespace POC.NetCore.API.Controllers
         
         // PUT api/pessoas
         [HttpPut]
-        public async Task<ActionResult> Put(Pessoa model)
+        public async Task<IActionResult> Put(Pessoa model)
         {
 
             HttpResponseMessageAPI responseAPI;
@@ -149,7 +149,7 @@ namespace POC.NetCore.API.Controllers
        
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
             HttpResponseMessageAPI responseAPI;
 

@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using POC.NetCore.API;
 using POC.NetCore.Services;
+using POC.NETCore.LDAP;
 
 namespace WebApplication1
 {
@@ -24,8 +25,8 @@ namespace WebApplication1
            .SetBasePath(Directory.GetCurrentDirectory())
            .AddJsonFile("appsettings.json");
 
-         
-            
+            Configuration = builder.Build();
+
         }
 
         public IConfiguration Configuration { get; }
@@ -35,6 +36,7 @@ namespace WebApplication1
         {
             services.AddMvc();
             services.AddScoped<IPessoaService, PessoaService>();
+            services.AddScoped<IAuthenticationService, LdapAuthenticationService>();
             /*services.AddHttpClient(NamedHttpClients.OutraAPIClient, client =>
             {
                 client.BaseAddress = new Uri("http://localhost:59521//api//dummy/");
@@ -44,10 +46,14 @@ namespace WebApplication1
 
             services.AddHttpClient<IAPIClient, APIClient>(client =>
             {
-                client.BaseAddress = new Uri("http://localhost:59521//api//API/");
+                client.BaseAddress = new Uri($"{Configuration["Endpoints:urlAPI"]}");
+             //  client.BaseAddress = new Uri("http://localhost:59521//api//API/");
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             });
 
+            services.Configure<LdapConfig>(Configuration.GetSection("ldap"));
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
